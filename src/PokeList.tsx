@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PokeCard from './PokeCard';
 import type { ElementType } from './Element';
+
 export type SelectProps = { select: (pokemon?: Pokemon) => void };
 export type Pokemon = {
   name: string;
@@ -37,14 +38,19 @@ type Props = {
 const PokeList = ({ select, filter }: Props) => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [index, setIndex] = useState({ start: 1, end: DEFAULT_OFFSET });
+  const [loading, setLoading] = useState(false);
 
   const fetchPokemons = async () => {
+    if (loading) return;
+    console.log('i try to fetch');
     const fetchedPokemons = [];
+    setLoading(true);
     for (let i = index.start; i <= index.end; i++) {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`);
       const pokemon = (await response.json()) as Pokemon;
       fetchedPokemons.push(pokemon);
     }
+    setLoading(false);
     setIndex({ start: index.end + 1, end: index.end + DEFAULT_OFFSET });
     setPokemons([...pokemons, ...fetchedPokemons]);
     select(undefined);
@@ -67,7 +73,7 @@ const PokeList = ({ select, filter }: Props) => {
         );
       })}
       <button className='pokelist__button' onClick={fetchPokemons}>
-        Load more
+        {loading ? 'Loading...' : 'Load more'}
       </button>
     </div>
   );
