@@ -53,11 +53,12 @@ const PokeList = ({ select, filter }: Props) => {
     fetchPokemons();
   }, []);
 
-  const filteredPokemons = filter
-    ? pokemons.filter((pokemon) => {
-        return pokemon.types.some((t) => t.type.name === filter);
-      })
-    : pokemons;
+  const filteredPokemons =
+    filter !== undefined && filter !== 'no filter'
+      ? pokemons.filter((pokemon) => {
+          return pokemon.types.some((t) => t.type.name === filter);
+        })
+      : pokemons;
   return (
     <div className='pokelist'>
       {filteredPokemons.map((pokemon) => {

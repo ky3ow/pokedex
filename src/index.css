@@ -11,7 +11,8 @@
 
 :root {
   --poke-yellow: #fcc803;
-  --poke-blue: #2b65ae;
+  --poke-blue: #3761a8;
+  --poke-contrast-blue: #174a76;
   --poke-gray: #314148;
   --button-blue: #0488ff;
   --regular-border: 0.1rem solid var(--poke-gray);
@@ -42,9 +43,52 @@ body {
 }
 
 .app__header {
+  display: flex;
+  flex-direction: column;
   width: 30%;
   margin: 0 auto;
   border: 0.2rem solid var(--poke-blue);
+}
+
+.filter {
+  position: relative;
+}
+
+.filter::before {
+  position: absolute;
+  width: 0.8rem;
+  height: 0.5rem;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  content: '';
+  background-color: var(--poke-yellow);
+
+  clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+}
+
+.filter__select {
+  font-family: inherit;
+  font-size: 1rem;
+  display: grid;
+  width: 100%;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  color: var(--poke-yellow);
+  border: transparent;
+  background-color: var(--poke-blue);
+
+  appearance: none;
+}
+
+.filter__select:focus-within {
+  outline: 4px solid var(--poke-yellow);
+}
+
+.filter__option {
+  font-size: 1.2rem;
+  background-color: var(--poke-contrast-blue);
+  color: var(--element-color);
 }
 
 .app__title {
@@ -142,8 +186,8 @@ body {
 }
 
 .pokestats__table {
-  width: 100%;
   font-size: 0.9rem;
+  width: 100%;
 }
 
 .pokestats__row {

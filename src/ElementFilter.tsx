@@ -10,21 +10,31 @@ type Props = {
 const ElementFilter = ({ filter, setter }: Props) => {
   const colors = Object.keys(colorMap) as ElementType[];
   return (
-    <select
-      name='filter'
-      id='filter'
-      value={filter}
-      onChange={(e) => setter(e.target.value as ElementType)}
-    >
-      <option value='no filter'>no filter</option>
-      {colors.map((element) => {
-        return (
-          <option key={element} value={element}>
-            {element}
-          </option>
-        );
-      })}
-    </select>
+    <div className='filter'>
+      <select
+        className='filter__select'
+        name='filter'
+        id='filter'
+        value={filter}
+        onChange={(e) => setter(e.target.value as ElementType)}
+      >
+        <option className='filter__option' value='no filter'>
+          no filter
+        </option>
+        {colors.map((element) => {
+          return (
+            <option
+              className='filter__option'
+              key={element}
+              value={element}
+              style={{ '--element-color': colorMap[element] }}
+            >
+              {element}
+            </option>
+          );
+        })}
+      </select>
+    </div>
   );
 };
 
