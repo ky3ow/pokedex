@@ -16,6 +16,7 @@ const ElementFilter = ({ filter, setter }: Props) => {
         name='filter'
         id='filter'
         value={filter}
+        style={{ '--element-color': colorMap[filter as ElementType] }}
         onChange={(e) => setter(e.target.value as ElementType)}
       >
         <option className='filter__option' value='no filter'>

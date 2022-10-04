@@ -30,6 +30,7 @@ body {
 
 .flex-wrapper {
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
   margin-bottom: 2rem;
 
@@ -45,7 +46,7 @@ body {
 .app__header {
   display: flex;
   flex-direction: column;
-  width: 30%;
+  width: 80%;
   margin: 0 auto;
   border: 0.2rem solid var(--poke-blue);
 }
@@ -56,12 +57,12 @@ body {
 
 .filter::before {
   position: absolute;
+  top: 50%;
+  right: 1rem;
   width: 0.8rem;
   height: 0.5rem;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
   content: '';
+  transform: translateY(-50%);
   background-color: var(--poke-yellow);
 
   clip-path: polygon(100% 0%, 0 0%, 50% 100%);
@@ -74,9 +75,10 @@ body {
   width: 100%;
   padding: 1rem 2rem;
   cursor: pointer;
-  color: var(--poke-yellow);
+  text-transform: capitalize;
+  color: var(--element-color, #fff);
   border: transparent;
-  background-color: var(--poke-blue);
+  background-color: var(--poke-contrast-blue);
 
   appearance: none;
 }
@@ -87,8 +89,9 @@ body {
 
 .filter__option {
   font-size: 1.2rem;
+  text-transform: capitalize;
+  color: var(--element-color, #fff);
   background-color: var(--poke-contrast-blue);
-  color: var(--element-color);
 }
 
 .app__title {
@@ -111,7 +114,6 @@ body {
   display: grid;
 
   gap: 2rem;
-  grid-template-columns: repeat(3, 1fr);
 }
 
 .pokelist__button {
@@ -206,10 +208,31 @@ body {
 
 .pokestats__key,
 .pokestats__value {
+  font-size: 0.8rem;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .pokestats__key {
   border-right: var(--regular-border);
+}
+
+@media screen and (min-width: 992px) {
+  .flex-wrapper {
+    flex-direction: row;
+  }
+
+  .app__header {
+    width: 30%;
+  }
+
+  .pokelist {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .pokelist {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
