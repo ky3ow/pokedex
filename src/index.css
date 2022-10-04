@@ -6,34 +6,102 @@
 @font-face {
   font-family: PokemonRegular;
   src: local('PokemonRegular'),
-  url('./fonts/Pokemon\ GB.ttf') format('truetype');
+    url('./fonts/Pokemon\ GB.ttf') format('truetype');
 }
 
 :root {
   --poke-yellow: #fcc803;
   --poke-blue: #2b65ae;
+  --poke-gray: #314148;
+  --button-blue: #0488ff;
 }
 
 body {
   font-family: PokemonRegular, sans-serif;
   margin: 0;
-  padding-top: .5rem;
+  padding-top: 0.5rem;
+}
+
+.flex-wrapper {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 2rem;
+
+  padding-inline: 2rem;
+}
+
+.flex-wrapper__aside {
+  align-self: center;
 }
 
 .app__header {
   width: 30%;
   margin: 0 auto;
-  border: .1rem solid black;
+  border: 0.2rem solid var(--poke-blue);
 }
 
 .app__title {
   font-family: PokemonBold;
   font-size: 3rem;
-  line-height: 2rem;
   margin-top: 1rem;
   margin-bottom: 2rem;
   text-align: center;
-  letter-spacing: .5rem;
+  letter-spacing: 0.5rem;
   color: var(--poke-yellow);
   -webkit-text-stroke: 3px var(--poke-blue);
+}
+
+.app__main {
+  margin-top: 1rem;
+}
+
+.pokelist {
+  display: grid;
+
+  gap: 2rem;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.pokelist__button {
+  text-transform: capitalize;
+  color: #fff;
+  border-style: initial;
+  background-color: var(--button-blue);
+
+  grid-column: span 3;
+}
+
+.pokemon {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 1rem 1rem 2rem;
+  border: 0.1rem solid var(--poke-gray);
+
+  gap: 0.5rem;
+}
+
+.pokemon__icon {
+  width: auto;
+  height: 200px;
+}
+
+.pokemon__name {
+  font-weight: 600;
+}
+
+.pokemon__elements {
+  font-size: 0.7rem;
+  display: flex;
+  align-self: flex-start;
+
+  gap: 1rem;
+}
+
+.pokemon__element {
+  padding: 0.5rem 1rem;
+  border: 0.1rem solid var(--element-color);
+  border-radius: 5px;
+  background-color: var(--element-color);
+  background-image: linear-gradient(to bottom, #fff, var(--element-color));
 }
