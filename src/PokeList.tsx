@@ -35,29 +35,43 @@ type Props = {
   filter?: ElementType | 'no filter';
 } & SelectProps;
 
-const PokeList = ({ select, filter }: Props) => {
+const usePokemons = (pokemonNumber: number) => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-  const [index, setIndex] = useState({ start: 1, end: DEFAULT_OFFSET });
+  const [index, setIndex] = useState({ start: 1, end: pokemonNumber });
   const [loading, setLoading] = useState(false);
 
-  const fetchPokemons = async () => {
-    if (loading) return;
-    console.log('i try to fetch');
-    const fetchedPokemons = [];
-    setLoading(true);
-    for (let i = index.start; i <= index.end; i++) {
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`);
-      const pokemon = (await response.json()) as Pokemon;
-      fetchedPokemons.push(pokemon);
-    }
-    setLoading(false);
-    setIndex({ start: index.end + 1, end: index.end + DEFAULT_OFFSET });
-    setPokemons([...pokemons, ...fetchedPokemons]);
-    select(undefined);
+  const incrementIndex = (loadNumber: number = pokemonNumber) => {
+    setIndex({ start: index.end + 1, end: index.end + loadNumber });
   };
+
   useEffect(() => {
+    const fetchPokemons = async () => {
+      const fetchedPokemons: Pokemon[] = [];
+      setLoading(true);
+      for (let i = index.start; i <= index.end; i++) {
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`);
+        const pokemon = (await response.json()) as Pokemon;
+        fetchedPokemons.push(pokemon);
+      }
+      setLoading(false);
+      setPokemons((pokemons) => {
+        if (
+          pokemons.length !== 0 &&
+          fetchedPokemons.some((pokemon, i) => pokemon.id === pokemons[i].id)
+        )
+          return pokemons;
+        return [...pokemons, ...fetchedPokemons];
+      });
+    };
+
     fetchPokemons();
-  }, []);
+  }, [index.start, index.end, pokemonNumber]);
+
+  return { pokemons, loading, loadMore: incrementIndex };
+};
+
+const PokeList = ({ select, filter }: Props) => {
+  const { pokemons, loading, loadMore } = usePokemons(DEFAULT_OFFSET);
 
   const filteredPokemons =
     filter !== undefined && filter !== 'no filter'
@@ -72,7 +86,7 @@ const PokeList = ({ select, filter }: Props) => {
           <PokeCard key={pokemon.name} pokemon={pokemon} select={select} />
         );
       })}
-      <button className='pokelist__button' onClick={fetchPokemons}>
+      <button className='pokelist__button' onClick={() => loadMore()}>
         {loading ? 'Loading...' : 'Load more'}
       </button>
     </div>
