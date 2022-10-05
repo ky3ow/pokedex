@@ -86,7 +86,10 @@ const PokeList = ({ select, filter }: Props) => {
           <PokeCard key={pokemon.name} pokemon={pokemon} select={select} />
         );
       })}
-      <button className='pokelist__button' onClick={() => loadMore()}>
+      <button
+        className='pokelist__button'
+        onClick={() => !loading && loadMore()}
+      >
         {loading ? 'Loading...' : 'Load more'}
       </button>
     </div>
