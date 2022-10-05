@@ -46,22 +46,30 @@ const usePokemons = (pokemonNumber: number) => {
 
   useEffect(() => {
     const fetchPokemons = async () => {
-      const fetchedPokemons: Pokemon[] = [];
       setLoading(true);
-      for (let i = index.start; i <= index.end; i++) {
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`);
-        const pokemon = (await response.json()) as Pokemon;
-        fetchedPokemons.push(pokemon);
+      const promises: Promise<Pokemon>[] = [];
+      try {
+        for (let i = index.start; i <= index.end; i++) {
+          const response = fetch(`https://pokeapi.co/api/v2/pokemon/${i}`).then(
+            (r) => r.json()
+          );
+          promises.push(response);
+        }
+        const fetchedPokemons = await Promise.all(promises);
+
+        setPokemons((pokemons) => {
+          if (
+            pokemons.length !== 0 &&
+            fetchedPokemons.some((pokemon, i) => pokemon.id === pokemons[i].id)
+          )
+            return pokemons;
+          return [...pokemons, ...fetchedPokemons];
+        });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-      setPokemons((pokemons) => {
-        if (
-          pokemons.length !== 0 &&
-          fetchedPokemons.some((pokemon, i) => pokemon.id === pokemons[i].id)
-        )
-          return pokemons;
-        return [...pokemons, ...fetchedPokemons];
-      });
     };
 
     fetchPokemons();
